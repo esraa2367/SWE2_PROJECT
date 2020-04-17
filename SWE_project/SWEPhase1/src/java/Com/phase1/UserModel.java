@@ -105,4 +105,22 @@ public class UserModel
         s.setString(4, type);
         s.executeUpdate();
     }
+    public ArrayList getPass(@PathParam("email") String email, @PathParam("userName") String userName) throws ClassNotFoundException, SQLException
+    {
+        ArrayList<String> ps = new ArrayList();
+        Connection con = null;
+        Class.forName("org.apache.derby.jdbc.ClientDriver");
+        con = DriverManager.getConnection("jdbc:derby://localhost:1527/Shopping", "Lubna", "1234");
+        String query1 = "select password from info where info.name = '" + userName + "' or info.email = '" + email + "'";
+        Statement stI = con.createStatement();
+        ResultSet rsI = stI.executeQuery(query1);
+       String x ="";
+        while (rsI.next()) {
+            //User U = new User();
+            //U.setUserName(rsI.getString("password"));
+            x = rsI.getString("password");
+            ps.add(x);
+        }
+        return ps;
+    }
 }

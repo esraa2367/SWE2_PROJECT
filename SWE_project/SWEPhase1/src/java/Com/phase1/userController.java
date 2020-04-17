@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.jws.WebService;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -22,17 +23,19 @@ import javax.ws.rs.core.MediaType;
  *
  * @author Lubna
  */
+@WebService
 @Path("userCon")
-public class userController {
+public class userController 
+{
     User u;
     public UserModel m = new UserModel();
-    @GET
+    /*@GET
     @Path("/allRegister")
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<User> allRegisteredUsers() throws ClassNotFoundException, SQLException 
     {
        return m.findAll();
-    }
+    }*/
 //(String email,String username, String password, String type)
 //(@PathParam ("email")String email, @PathParam ("username")String username, @PathParam ("password")String password, @PathParam ("type")String type)
 
@@ -60,4 +63,23 @@ public class userController {
         }
        
     }
+    @GET
+    @Path("/login/{email}/{password}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String login( @PathParam("email") String email,@PathParam("password") String password) throws ClassNotFoundException, SQLException 
+    {
+        Connection con = null;
+        Class.forName("org.apache.derby.jdbc.ClientDriver");
+        con = DriverManager.getConnection("jdbc:derby://localhost:1527/Shopping", "Lubna", "1234");
+        ArrayList<String> pass = m.getPass(email,email);
+        if (pass.contains(password))
+        {
+            return "Valid";
+        }
+        else
+        {
+            return "Sorry";
+        }
+    }
+    
 }
