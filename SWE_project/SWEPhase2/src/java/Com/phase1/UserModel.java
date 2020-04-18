@@ -25,6 +25,7 @@ import javax.ws.rs.core.MediaType;
 public class UserModel 
 {
     User u;
+    public  String UName = "";
 
     public ArrayList<User> findAll() throws ClassNotFoundException, SQLException {
         ArrayList<User> tmp = new ArrayList();
@@ -90,7 +91,7 @@ public class UserModel
             u = new Buyer();
         } else if (type.equals("storeOwner")) {
             u = new StoreOwner();
-        } else if (type.equals("Administrator")) {
+        } else if (type.equals("Admin")) {
             u = new Administrator();
         }
         u.setUserName(username);
@@ -105,22 +106,69 @@ public class UserModel
         s.setString(4, type);
         s.executeUpdate();
     }
-    public ArrayList getPass(@PathParam("email") String email, @PathParam("userName") String userName) throws ClassNotFoundException, SQLException
+    public ArrayList<User> getPass(@PathParam("email") String email, @PathParam("userName") String userName) throws ClassNotFoundException, SQLException
     {
-        ArrayList<String> ps = new ArrayList();
+        ArrayList<User> PS = new ArrayList();
         Connection con = null;
         Class.forName("org.apache.derby.jdbc.ClientDriver");
         con = DriverManager.getConnection("jdbc:derby://localhost:1527/Shopping", "Lubna", "1234");
-        String query1 = "select password from info where info.name = '" + userName + "' or info.email = '" + email + "'";
+        String query1 = "select password from info where info.name = '" + userName + "' ";
+        String query2 = "select password from info where info.email = '" + email + "' ";
+        //String query1 = "select password from info where info.email = '" + userName + "' or info.email = '" + email + "'";
         Statement stI = con.createStatement();
         ResultSet rsI = stI.executeQuery(query1);
-       String x ="";
         while (rsI.next()) {
-            //User U = new User();
-            //U.setUserName(rsI.getString("password"));
-            x = rsI.getString("password");
-            ps.add(x);
+            User U = new User();
+            U.setPassword(rsI.getString("password"));
+            PS.add(U);
+            UName = userName;
         }
-        return ps;
+        if (PS.isEmpty())
+        {
+            stI = con.createStatement();
+            rsI = stI.executeQuery(query2);
+            while (rsI.next()) 
+            {
+                User U = new User();
+                U.setPassword(rsI.getString("password"));
+                PS.add(U);
+                UName = email;
+            }
+        }
+        return PS;
+    }
+    public boolean isAdmin(@PathParam("userName") String userName,@PathParam("email") String email) throws SQLException, ClassNotFoundException
+    {
+        ArrayList<User> TY = new ArrayList();
+         Connection con = null;
+        Class.forName("org.apache.derby.jdbc.ClientDriver");
+        con = DriverManager.getConnection("jdbc:derby://localhost:1527/Shopping", "Lubna", "1234");
+        String query1 = "select type from info where info.name = '" + userName + "' ";
+        String query2 = "select type from info where info.email = '" + email + "' ";
+        Statement stI = con.createStatement();
+        ResultSet rsI = stI.executeQuery(query1);
+        //get all user name and put it in the array list of user.
+        while (rsI.next()) {
+            User U = new User();
+            U.setType(rsI.getString("type"));
+            TY.add(U);
+        }
+        if (TY.isEmpty())
+        {
+            stI = con.createStatement();
+            rsI = stI.executeQuery(query2);
+            while (rsI.next()) 
+            {
+                User U = new User();
+                U.setType(rsI.getString("type"));
+                TY.add(U);
+            }
+        }
+        //check there exist any matching user name.
+        if (TY.get(0).getType().equals("Admin")) {
+            return true;
+        }
+        
+        return false;
     }
 }

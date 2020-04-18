@@ -34,7 +34,7 @@ public class User
     public void setPassword(String password) {
         this.password = password;
     }
-    /*public String getType() {
+    public String getType() {
         return type;
     }
 
@@ -42,7 +42,7 @@ public class User
         this.type = type;
     }
     public String type;
-    */
+    
     public String password;
     public String userName;
     
