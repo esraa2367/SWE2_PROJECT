@@ -19,14 +19,14 @@ import javax.ws.rs.core.MediaType;
  *
  * @author Lubna
  */
-@WebService
-@Path("adminCon")
+//@WebService
+//@Path("adminCon")
 public class adminController 
 {
-    public UserModel m = new UserModel();
+    //public UserModel m = new UserModel();
     //ArrayList<User> empty = new ArrayList<User>();
     
-    @GET
+    /*@GET
     @Path("/allRegister")
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<User> allRegisteredUsers() throws ClassNotFoundException, SQLException 
@@ -38,5 +38,5 @@ public class adminController
             return m.findAll();
        }
        return empty;
-    }
+    }*/
 }

@@ -25,7 +25,7 @@ import javax.ws.rs.core.MediaType;
 public class UserModel 
 {
     User u;
-    public  String UName = "";
+   
 
     public ArrayList<User> findAll() throws ClassNotFoundException, SQLException {
         ArrayList<User> tmp = new ArrayList();
@@ -121,7 +121,7 @@ public class UserModel
             User U = new User();
             U.setPassword(rsI.getString("password"));
             PS.add(U);
-            UName = userName;
+            //UName = userName;
         }
         if (PS.isEmpty())
         {
@@ -132,7 +132,7 @@ public class UserModel
                 User U = new User();
                 U.setPassword(rsI.getString("password"));
                 PS.add(U);
-                UName = email;
+                //UName = email;
             }
         }
         return PS;

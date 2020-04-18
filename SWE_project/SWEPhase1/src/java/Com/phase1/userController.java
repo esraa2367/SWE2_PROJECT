@@ -29,6 +29,7 @@ public class userController
 {
     User u;
     public UserModel m = new UserModel();
+   public  static String UName = "";
     /*@GET
     @Path("/allRegister")
     @Produces(MediaType.APPLICATION_JSON)
@@ -64,7 +65,7 @@ public class userController
        
     }
     @GET
-    @Path("/login/{emailOrName}/{password}")
+    @Path("/login/{email}/{password}")
     @Produces(MediaType.APPLICATION_JSON)
     //public String login(@PathParam("email") String email,@PathParam("password") String password) throws ClassNotFoundException, SQLException 
      public String login(@PathParam("email") String emailOrName,@PathParam("password") String password) throws ClassNotFoundException, SQLException 
@@ -74,14 +75,33 @@ public class userController
         con = DriverManager.getConnection("jdbc:derby://localhost:1527/Shopping", "Lubna", "1234");
         //ArrayList<User> pass = m.getPass(email,email);
         //if (pass.get(0).getPassword().equals(password))
+        UName = emailOrName;
         if(m.getPass(emailOrName, emailOrName).get(0).getPassword().equals(password))
         {
             return "Valid";
         }
         else
         {
-            return "Sorry";
+            return "Invalid";
         }
+    }
+    @GET
+    @Path("/allRegister")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<User> allRegisteredUsers() throws ClassNotFoundException, SQLException 
+    {
+        ArrayList<User> empty = new ArrayList<User>();
+        String defult = UName;
+        if (defult.equals(""))
+        {
+            return empty;
+        }
+        if (m.isAdmin(defult,defult) == true)
+        {
+            return m.findAll();
+       }
+        
+       return empty;
     }
     
 }

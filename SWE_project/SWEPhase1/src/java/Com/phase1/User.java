@@ -42,8 +42,6 @@ public class User
         this.type = type;
     }
     public String type;
-    
     public String password;
     public String userName;
-    
 }
