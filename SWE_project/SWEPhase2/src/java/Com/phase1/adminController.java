@@ -24,11 +24,19 @@ import javax.ws.rs.core.MediaType;
 public class adminController 
 {
     public UserModel m = new UserModel();
+    //ArrayList<User> empty = new ArrayList<User>();
+    
     @GET
     @Path("/allRegister")
     @Produces(MediaType.APPLICATION_JSON)
     public ArrayList<User> allRegisteredUsers() throws ClassNotFoundException, SQLException 
     {
-       return m.findAll();
+        ArrayList<User> empty = new ArrayList<User>();
+        String defult = "lubna@gmail.com";
+        if (m.isAdmin(defult,defult) == true)
+        {
+            return m.findAll();
+       }
+       return empty;
     }
 }

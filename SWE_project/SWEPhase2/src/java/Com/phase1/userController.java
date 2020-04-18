@@ -64,15 +64,17 @@ public class userController
        
     }
     @GET
-    @Path("/login/{email}/{password}")
+    @Path("/login/{emailOrName}/{password}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String login( @PathParam("email") String email,@PathParam("password") String password) throws ClassNotFoundException, SQLException 
+    //public String login(@PathParam("email") String email,@PathParam("password") String password) throws ClassNotFoundException, SQLException 
+     public String login(@PathParam("email") String emailOrName,@PathParam("password") String password) throws ClassNotFoundException, SQLException 
     {
         Connection con = null;
         Class.forName("org.apache.derby.jdbc.ClientDriver");
         con = DriverManager.getConnection("jdbc:derby://localhost:1527/Shopping", "Lubna", "1234");
-        ArrayList<String> pass = m.getPass(email,email);
-        if (pass.contains(password))
+        //ArrayList<User> pass = m.getPass(email,email);
+        //if (pass.get(0).getPassword().equals(password))
+        if(m.getPass(emailOrName, emailOrName).get(0).getPassword().equals(password))
         {
             return "Valid";
         }
